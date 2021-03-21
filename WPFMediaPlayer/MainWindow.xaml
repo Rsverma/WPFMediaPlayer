@@ -1,8 +1,52 @@
-﻿<Window x:Name="WMPlayer" x:Class="WPFMediaPlayer.MainWindow"
+﻿<hc:Window xmlns:hc="https://handyorg.github.io/handycontrol"
+           x:Name="WMPlayer" x:Class="WPFMediaPlayer.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="WPF Media Player" Height="470" Width="700" >
     <Grid>
-        <MediaElement/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <Menu>
+            <MenuItem Header="File">
+                <MenuItem Header="Open" Click="Open_OnClick"/>
+            </MenuItem>
+            <MenuItem Header="About" Click="About_OnClick" />
+        </Menu>
+        
+        <MediaElement x:Name="mediaPlayer" Grid.Row="1" LoadedBehavior="Manual" UnloadedBehavior="Manual"
+                      MediaEnded="MediaElement_OnMediaEnded" MediaFailed="MediaElement_OnMediaFailed"
+                      MediaOpened="MyMediaElement_MediaOpened"/>
+        <StackPanel Orientation="Vertical" Grid.Row="2">
+            <Grid Margin="10 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock x:Name="currentTime" Margin="10 2" Text="--:--"/>
+                <hc:PreviewSlider Height="10" Name="playBackSlider" Grid.Column="1" Value="0" HorizontalAlignment="Stretch">
+                    <hc:PreviewSlider.PreviewContent>
+                        <Label Style="{StaticResource LabelPrimary}" Content="{Binding Path=(hc:PreviewSlider.PreviewPosition),RelativeSource={RelativeSource Self}}" ContentStringFormat="hh\:mm\:ss"/>
+                    </hc:PreviewSlider.PreviewContent>
+                </hc:PreviewSlider>
+                <TextBlock x:Name="totalTime" Grid.Column="2" Margin="10 2" Text="--:--"/>
+            </Grid>
+
+            <Grid Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <ToggleButton x:Name="btnPlayPause" Grid.Column="0" Click="PlayPauseClicked" 
+                              ToolTip="Play the video" IsEnabled="False"/>
+
+            </Grid>
+        </StackPanel>
     </Grid>
-</Window>
+</hc:Window>
